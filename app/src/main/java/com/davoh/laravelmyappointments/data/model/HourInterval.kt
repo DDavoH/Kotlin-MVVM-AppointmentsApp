@@ -1,4 +1,4 @@
-package com.davoh.laravelmyappointments.model
+package com.davoh.laravelmyappointments.data.model
 
 data class HourInterval(
     val start:String, val end:String

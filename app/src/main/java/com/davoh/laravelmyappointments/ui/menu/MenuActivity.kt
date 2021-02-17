@@ -4,7 +4,6 @@ package com.davoh.laravelmyappointments.ui.menu
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -13,7 +12,6 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.databinding.ActivityMenuBinding
-import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast

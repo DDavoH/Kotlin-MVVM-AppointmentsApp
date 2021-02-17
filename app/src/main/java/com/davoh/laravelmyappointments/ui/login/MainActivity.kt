@@ -3,11 +3,8 @@ package com.davoh.laravelmyappointments.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.databinding.ActivityMainBinding
-import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.ui.register.RegisterActivity
@@ -15,9 +12,7 @@ import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
 import com.davoh.laravelmyappointments.utils.toast
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

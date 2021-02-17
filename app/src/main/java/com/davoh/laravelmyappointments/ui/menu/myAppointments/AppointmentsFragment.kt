@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davoh.laravelmyappointments.adapters.AppointmentAdapter
 import com.davoh.laravelmyappointments.databinding.FragmentAppointmentsBinding
-import com.davoh.laravelmyappointments.io.ApiService
-import com.davoh.laravelmyappointments.model.Appointment
+import com.davoh.laravelmyappointments.data.model.Appointment
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast

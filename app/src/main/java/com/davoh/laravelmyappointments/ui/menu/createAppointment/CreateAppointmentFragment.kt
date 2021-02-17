@@ -16,11 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.databinding.FragmentCreateAppointmentBinding
-import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.io.response.SimpleResponse
-import com.davoh.laravelmyappointments.model.Doctor
-import com.davoh.laravelmyappointments.model.Schedule
-import com.davoh.laravelmyappointments.model.Specialty
+import com.davoh.laravelmyappointments.data.model.Doctor
+import com.davoh.laravelmyappointments.data.model.Schedule
+import com.davoh.laravelmyappointments.data.model.Specialty
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast

@@ -1,8 +1,9 @@
-package com.davoh.laravelmyappointments.model
+package com.davoh.laravelmyappointments.data.model
 
-data class Specialty(
+data class Doctor(
     val id:Int, val name:String
 ){
+
     override fun toString(): String {
         return name
     }

@@ -11,9 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.davoh.laravelmyappointments.R
-import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.ui.login.MainActivity
-import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast

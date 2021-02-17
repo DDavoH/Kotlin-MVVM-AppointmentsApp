@@ -2,11 +2,8 @@ package com.davoh.laravelmyappointments.ui.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.davoh.laravelmyappointments.databinding.ActivityRegisterBinding
-import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.utils.PreferenceHelper

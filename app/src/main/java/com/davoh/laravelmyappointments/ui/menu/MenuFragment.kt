@@ -2,7 +2,6 @@ package com.davoh.laravelmyappointments.ui.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.databinding.FragmentMenuBinding
-import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.ui.login.MainActivity
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set

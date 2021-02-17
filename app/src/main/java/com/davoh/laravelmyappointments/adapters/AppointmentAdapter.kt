@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.davoh.laravelmyappointments.R
-import com.davoh.laravelmyappointments.model.Appointment
+import com.davoh.laravelmyappointments.data.model.Appointment
 import kotlinx.android.synthetic.main.appointment_row.view.*
 import java.text.SimpleDateFormat
 import java.util.*

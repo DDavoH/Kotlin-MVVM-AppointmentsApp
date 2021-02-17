@@ -1,4 +1,4 @@
-package com.davoh.laravelmyappointments.model
+package com.davoh.laravelmyappointments.data.model
 
 import com.google.gson.annotations.SerializedName
 
