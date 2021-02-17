@@ -1,0 +1,105 @@
+package com.davoh.laravelmyappointments.ui.menu
+
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.davoh.laravelmyappointments.R
+import com.davoh.laravelmyappointments.databinding.FragmentMenuBinding
+import com.davoh.laravelmyappointments.io.ApiService
+import com.davoh.laravelmyappointments.ui.login.MainActivity
+import com.davoh.laravelmyappointments.utils.PreferenceHelper
+import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
+import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class MenuFragment : Fragment() {
+
+    private var _binding: FragmentMenuBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMenuBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        binding.btnRegisterAppointment.setOnClickListener {
+            findNavController().navigate(R.id.action_menuFragment_to_createAppointmentFragment)
+        }
+
+        binding.btnMyAppointments.setOnClickListener {
+            findNavController().navigate(R.id.action_menuFragment_to_appointmentsFragment)
+        }
+
+        binding.btnCloseSession.setOnClickListener {
+            performLogout()
+        }
+
+
+    }
+
+    //[LOGOUT]
+    private val apiService by lazy{
+        ApiService.create()
+    }
+
+    private fun performLogout(){
+        val preferences = PreferenceHelper.defaultPrefs(requireContext())
+        val jwt = preferences["accessToken",""]
+        closeSessionInLaravel(jwt)
+    }
+
+    //despues cierro la session para no aceptas ningun token
+    private fun closeSessionInLaravel(jwt: String){
+        val call = apiService.postLogout("Bearer $jwt")
+        call.enqueue(object: Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(response.isSuccessful){
+                    clearSessionPreference()
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+
+            }
+
+        })
+    }
+
+    private fun clearSessionPreference() {
+        /*val preferences = requireContext().getSharedPreferences("general", Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putBoolean("active_session",false)
+        editor.apply()*/
+
+        val preferences = PreferenceHelper.defaultPrefs(requireContext())
+        preferences["accessToken"] = ""
+    }
+    //[LOGOUT]
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+}

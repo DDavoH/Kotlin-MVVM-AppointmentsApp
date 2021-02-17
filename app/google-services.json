@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "432768388751",
+    "project_id": "my-appointments-3320e",
+    "storage_bucket": "my-appointments-3320e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432768388751:android:5b27feb87baaac3030aafa",
+        "android_client_info": {
+          "package_name": "com.davoh.laravelmyappointments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432768388751-gvicgdecnpg3lfnf81gk8oj3ftchn3lr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.davoh.laravelmyappointments",
+            "certificate_hash": "d91680e61502b887c3f658ef753caa65cbb1d269"
+          }
+        },
+        {
+          "client_id": "432768388751-a810b5v6fig3fhlfmstsi8mpu0im265t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD3F7K622UEnF386xmS_SndcM_C-nj2O4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432768388751-a810b5v6fig3fhlfmstsi8mpu0im265t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

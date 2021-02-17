@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="12dp"
+            >
+
+            <TextView
+                android:id="@+id/tvAppointmentId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Cita médica #7"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/tvDoctorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:text="Médico Test"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/tvScheduledDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:text="Atención el dia 24/01/2024"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/tvScheduledHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:text="A las 4:00 PM"
+                android:textSize="14sp"
+               />
+
+
+
+              <FrameLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      tools:ignore="UselessParent">
+
+                  <TextView
+                      android:id="@+id/tvStatus"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:textColor="@color/black"
+                      tools:text="Reservada"
+                      android:textSize="14sp"
+                      />
+
+                  <ImageButton
+                      android:id="@+id/btnShowDetails"
+                      android:background="@color/white"
+                      android:layout_gravity="end"
+                      android:src="@drawable/ic_expand_more"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+
+
+                  </FrameLayout>
+
+
+              <LinearLayout
+                  android:visibility="gone"
+                  android:id="@+id/linearLayoutDetails"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      tools:ignore="UselessParent">
+
+                  <TextView
+                      android:id="@+id/tvSpecialty"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal"
+                      android:textColor="@color/black"
+                      tools:text="Oftalmologia"
+                      android:textSize="14sp"
+                      />
+
+
+                  <TextView
+                      android:id="@+id/tvDescription"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal"
+                      android:textColor="@color/black"
+                      tools:text="Me duele la cabeza"
+                      android:textSize="14sp"
+                      />
+
+                  <TextView
+                      android:id="@+id/tvType"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal"
+                      android:textColor="@color/black"
+                      tools:text="Consulta"
+                      android:textSize="14sp"
+                      />
+
+
+                  <TextView
+                      android:id="@+id/tvCreatedAt"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal"
+                      android:textColor="@color/black"
+                      tools:text="Cita registrada el dia 05/Diciembre/2020"
+                      android:textSize="14sp"
+                      />
+
+
+              </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

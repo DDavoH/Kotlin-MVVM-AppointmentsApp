@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.davoh.laravelmyappointments.ui.menu.MenuFragment"
+        tools:layout="@layout/fragment_menu"
+        android:label="Menu principal"
+        >
+        <action
+            android:id="@+id/action_menuFragment_to_createAppointmentFragment"
+            app:destination="@id/createAppointmentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_menuFragment_to_appointmentsFragment"
+            app:destination="@id/appointmentsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/createAppointmentFragment"
+        android:name="com.davoh.laravelmyappointments.ui.menu.createAppointment.CreateAppointmentFragment"
+        android:label="Reservar cita"
+        tools:layout="@layout/fragment_create_appointment" />
+    <fragment
+        android:id="@+id/appointmentsFragment"
+        android:name="com.davoh.laravelmyappointments.ui.menu.myAppointments.AppointmentsFragment"
+        android:label="Mis citas"
+        tools:layout="@layout/fragment_appointments" />
+</navigation>

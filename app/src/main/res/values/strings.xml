@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">LaravelMyAppointments</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="date_format">%1$s-%2$s-%3$s</string>
+
+    <string name="appointment_id">Cita médica #%1$d</string>
+    <string name="appointment_date">Atención el dia %1$s</string>
+    <string name="appointment_time">A las %1$s</string>
+    <string name="press_back_again">Presione una vez más para salir</string>
+    <string name="default_notification_channel_firebase_id">firebase_fcm</string>
+    <string name="fcm_message">My Appointments</string>
+    <string name="msg_token_fmt">FCM registration Token: %s</string>
+</resources>
