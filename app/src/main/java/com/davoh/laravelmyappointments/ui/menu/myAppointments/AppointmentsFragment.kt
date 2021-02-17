@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.davoh.laravelmyappointments.adapters.AppointmentAdapter
 import com.davoh.laravelmyappointments.databinding.FragmentAppointmentsBinding
 import com.davoh.laravelmyappointments.io.ApiService
 import com.davoh.laravelmyappointments.model.Appointment

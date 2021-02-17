@@ -1,4 +1,4 @@
-package com.davoh.laravelmyappointments.ui.menu.myAppointments
+package com.davoh.laravelmyappointments.adapters
 
 import android.view.LayoutInflater
 import android.view.View
