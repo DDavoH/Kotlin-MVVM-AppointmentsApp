@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.davoh.laravelmyappointments.R
+import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.ui.login.MainActivity
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
@@ -24,7 +25,7 @@ import retrofit2.Response
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val apiService by lazy{
-        ApiService.create()
+        LaravelApiService.create()
     }
     /**
      * Called when message is received.

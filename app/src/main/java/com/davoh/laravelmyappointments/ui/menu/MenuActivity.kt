@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.davoh.laravelmyappointments.R
+import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.databinding.ActivityMenuBinding
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
@@ -18,11 +19,12 @@ import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+@AndroidEntryPoint
 class MenuActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
@@ -34,7 +36,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private val apiService by lazy{
-        ApiService.create()
+        LaravelApiService.create()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,8 +95,6 @@ class MenuActivity : AppCompatActivity() {
             })
 
         })
-
-
 
     }
 

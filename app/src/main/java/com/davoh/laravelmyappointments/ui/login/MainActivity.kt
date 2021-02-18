@@ -3,39 +3,43 @@ package com.davoh.laravelmyappointments.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.davoh.laravelmyappointments.R
+import com.davoh.laravelmyappointments.api.LaravelApiService
+import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.ActivityMainBinding
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.ui.register.RegisterActivity
+import com.davoh.laravelmyappointments.ui.viewModels.LoginViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
 import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding //First search by xml activity_main binding
+
+    private val viewModel : LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-       /* val preferences = getSharedPreferences("general", Context.MODE_PRIVATE)
-        val session = preferences.getBoolean("active_session", false)
-*/
-
-        /*if(session){
-            goMenuActivity()
-        }*/
-
 
         val preferences = PreferenceHelper.defaultPrefs(this)
         if(preferences["accessToken",""].contains(".")){
@@ -56,44 +60,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     //[LOGIN]
-    private val apiService: ApiService by lazy{
-        ApiService.create()
-    }
     private fun performLogin(){
-        val email = binding.etEmail.text.toString()
-        val password = binding.etPassword.text.toString()
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
 
-        if(email.trim().isEmpty() || password.trim().isEmpty()){
+        if(email.isEmpty() || password.isEmpty()){
             toast("Por favor ingrese un correo y contraseña")
             return
         }
 
-
-       val call = apiService.postLogin(binding.etEmail.text.toString(), binding.etPassword.text.toString())
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    val loginResponse = response.body()
-                    if (loginResponse == null) {
-                        //Toast.makeText(this@MainActivity, "Hubo un fallo al iniciar sesión", Toast.LENGTH_SHORT).show()
-                        toast("Hubo un fallo al iniciar sesión")
-                        return
-                    }
-                    if (loginResponse.success) {
-                        createSessionPreference(loginResponse.accessToken)
-                        toast("Bienvenido ${loginResponse.user.name}!")
+        lifecycleScope.launch {
+            /*val flow = viewModel.postLogin(email, password)
+            try{
+                flow.collect{ response ->
+                   /* if (response.success) {
+                        createSessionPreference(response.accessToken)
+                        toast("Bienvenido ${response.user.name}! con Hilt!")
                         goMenuActivity(true)
-                    } else if (!loginResponse.success) {
+                    } else if (!response.success) {
+                        toast("Las credenciales son incorrectas")
+                    }*/
+                }
+            } catch (e: Exception) {
+                toast("Hubo un error de conexion :( : $e")
+            }*/
+        }
+        viewModel.postLogin(email,password).observe(this){ result ->
+            when(result){
+                is Resource.Loading->{
+                    toast("Cargando...")
+                }
+                is Resource.Success->{
+                    if(result.data.success){
+                        createSessionPreference(result.data.accessToken)
+                        toast("Bienvenido ${result.data.user.name}! con Hilt!")
+                        goMenuActivity(true)
+                    }else if (!result.data.success) {
                         toast("Las credenciales son incorrectas")
                     }
                 }
+                is Resource.Failure->{
+                    toast("Hubo un erro de conexión")
+                }
             }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                //Toast.makeText(this@MainActivity, "Hubo un fallo al iniciar sesión", Toast.LENGTH_SHORT).show()
-                toast("Hubo un fallo en la conexión al servidor")
-            }
-        })
+        }
     }
     //[LOGIN]
 

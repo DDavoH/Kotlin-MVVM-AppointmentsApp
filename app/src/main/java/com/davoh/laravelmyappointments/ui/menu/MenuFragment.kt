@@ -8,15 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
+import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.databinding.FragmentMenuBinding
 import com.davoh.laravelmyappointments.ui.login.MainActivity
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
@@ -54,7 +57,7 @@ class MenuFragment : Fragment() {
 
     //[LOGOUT]
     private val apiService by lazy{
-        ApiService.create()
+        LaravelApiService.create()
     }
 
     private fun performLogout(){

@@ -1,9 +1,10 @@
 package com.davoh.laravelmyappointments.io.response
 
 import com.davoh.laravelmyappointments.data.model.User
+import com.google.gson.annotations.SerializedName
 
 data class LoginResponse (
-        val success:Boolean,
-        val user: User,
-        val accessToken: String
+        @field:SerializedName("success") val success:Boolean,
+        @field:SerializedName("user") val user: User,
+        @field:SerializedName("accessToken") val accessToken: String
         )

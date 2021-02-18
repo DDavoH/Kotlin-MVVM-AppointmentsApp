@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
+import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.databinding.FragmentCreateAppointmentBinding
 import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import com.davoh.laravelmyappointments.data.model.Doctor
@@ -25,6 +26,7 @@ import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +34,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
-
+@AndroidEntryPoint
 class CreateAppointmentFragment : Fragment() {
 
     private var _binding: FragmentCreateAppointmentBinding? = null
@@ -135,8 +137,8 @@ class CreateAppointmentFragment : Fragment() {
     }
 
     //INITIALIZE APISERVICE
-    private val apIService: ApiService by lazy {
-        ApiService.create()
+    private val apIService: LaravelApiService by lazy {
+        LaravelApiService.create()
     }
     //INITIALIZE APISERVICE
 

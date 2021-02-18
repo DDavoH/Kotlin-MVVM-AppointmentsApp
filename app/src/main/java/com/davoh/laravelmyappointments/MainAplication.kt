@@ -1,4 +1,4 @@
-package com.davoh.laravelmyappointments.di
+package com.davoh.laravelmyappointments
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

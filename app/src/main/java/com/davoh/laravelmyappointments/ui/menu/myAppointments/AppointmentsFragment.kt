@@ -7,22 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davoh.laravelmyappointments.adapters.AppointmentAdapter
+import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.databinding.FragmentAppointmentsBinding
 import com.davoh.laravelmyappointments.data.model.Appointment
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class AppointmentsFragment : Fragment() {
 
     private var _binding: FragmentAppointmentsBinding? = null
     private val binding get() = _binding!!
 
-    private val apiService: ApiService by lazy{
-        ApiService.create()
+    private val apiService: LaravelApiService by lazy{
+        LaravelApiService.create()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
