@@ -47,14 +47,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            //validate with backend
             performLogin()
         }
 
         binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            //finish()
         }
 
     }
@@ -69,22 +67,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        lifecycleScope.launch {
-            /*val flow = viewModel.postLogin(email, password)
-            try{
-                flow.collect{ response ->
-                   /* if (response.success) {
-                        createSessionPreference(response.accessToken)
-                        toast("Bienvenido ${response.user.name}! con Hilt!")
-                        goMenuActivity(true)
-                    } else if (!response.success) {
-                        toast("Las credenciales son incorrectas")
-                    }*/
-                }
-            } catch (e: Exception) {
-                toast("Hubo un error de conexion :( : $e")
-            }*/
-        }
         viewModel.postLogin(email,password).observe(this){ result ->
             when(result){
                 is Resource.Loading->{
