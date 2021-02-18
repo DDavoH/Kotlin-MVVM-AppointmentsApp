@@ -17,6 +17,7 @@ import com.davoh.laravelmyappointments.ui.viewModels.LoginViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
+import com.davoh.laravelmyappointments.utils.showIf
 import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,8 +69,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.postLogin(email,password).observe(this){ result ->
+            binding.progressBar.showIf { result is Resource.Loading }
             when(result){
                 is Resource.Loading->{
+                    binding.btnLogin.isEnabled = false
                     toast("Cargando...")
                 }
                 is Resource.Success->{
@@ -82,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 is Resource.Failure->{
+                    binding.btnLogin.isEnabled = true
                     toast("Hubo un erro de conexión")
                 }
             }
