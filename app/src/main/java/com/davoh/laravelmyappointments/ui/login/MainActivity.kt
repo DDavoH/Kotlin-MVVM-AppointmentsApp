@@ -14,11 +14,9 @@ import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.ui.register.RegisterActivity
 import com.davoh.laravelmyappointments.ui.viewModels.LoginViewModel
-import com.davoh.laravelmyappointments.utils.PreferenceHelper
+import com.davoh.laravelmyappointments.utils.*
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
-import com.davoh.laravelmyappointments.utils.showIf
-import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -70,13 +68,15 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.postLogin(email,password).observe(this){ result ->
             binding.progressBar.showIf { result is Resource.Loading }
+            binding.btnLogin.disableIf { result is Resource.Loading }
+
             when(result){
                 is Resource.Loading->{
-                    binding.btnLogin.isEnabled = false
                     toast("Cargando...")
                 }
                 is Resource.Success->{
                     if(result.data.success){
+                        binding.btnLogin.disable()
                         createSessionPreference(result.data.accessToken)
                         toast("Bienvenido ${result.data.user.name}! con Hilt!")
                         goMenuActivity(true)
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 is Resource.Failure->{
-                    binding.btnLogin.isEnabled = true
+                    //binding.btnLogin.isEnabled = true
                     toast("Hubo un erro de conexión")
                 }
             }
