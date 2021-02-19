@@ -8,6 +8,7 @@ import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.ActivityRegisterBinding
 import com.davoh.laravelmyappointments.io.response.LoginResponse
+import com.davoh.laravelmyappointments.ui.dialogs.LoadingDialog
 import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.ui.viewModels.RegisterViewModel
 import com.davoh.laravelmyappointments.utils.*
@@ -24,6 +25,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private val viewModel: RegisterViewModel by viewModels()
 
+    private lateinit var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -32,6 +35,8 @@ class RegisterActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        loadingDialog = LoadingDialog(this)
 
         binding.btnRegister.setOnClickListener {
             performRegister()
@@ -47,13 +52,13 @@ class RegisterActivity : AppCompatActivity() {
         if(validateForm(name,email,password,passwordConfirmed)){
 
             viewModel.register(email,name,password,passwordConfirmed).observe(this){result->
-                binding.progressBar.showIf { result is Resource.Loading }
                 binding.btnRegister.disableIf { result is Resource.Loading }
                 when(result){
                     is Resource.Loading->{
-
+                        loadingDialog.startLoadingDialog()
                     }
                     is Resource.Success->{
+                        loadingDialog.dismissDialog()
                         val loginResponse = result.data
                         if (loginResponse.success) {
                             binding.btnRegister.disable()
@@ -66,6 +71,7 @@ class RegisterActivity : AppCompatActivity() {
                         }
                     }
                     is Resource.Failure->{
+                        loadingDialog.dismissDialog()
                         toast("Hubo un fallo en la conexión")
                     }
                 }
