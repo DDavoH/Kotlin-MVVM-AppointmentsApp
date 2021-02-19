@@ -13,6 +13,7 @@ import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.FragmentMenuBinding
+import com.davoh.laravelmyappointments.ui.dialogs.LoadingDialog
 import com.davoh.laravelmyappointments.ui.login.MainActivity
 import com.davoh.laravelmyappointments.ui.viewModels.MenuViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
@@ -34,6 +35,8 @@ class MenuFragment : Fragment() {
 
     private val viewModel: MenuViewModel by viewModels()
 
+    private lateinit var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -46,8 +49,10 @@ class MenuFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        loadingDialog = LoadingDialog(requireActivity())
 
         binding.btnRegisterAppointment.setOnClickListener {
             findNavController().navigate(R.id.action_menuFragment_to_createAppointmentFragment)
@@ -60,9 +65,8 @@ class MenuFragment : Fragment() {
         binding.btnCloseSession.setOnClickListener {
             performLogout()
         }
-
-
     }
+
 
     //[LOGOUT]
     private fun performLogout(){
@@ -74,12 +78,13 @@ class MenuFragment : Fragment() {
     //despues cierro la session para no aceptas ningun token
     private fun closeSessionInLaravel(jwt: String){
         viewModel.postLogout("Bearer $jwt").observe(viewLifecycleOwner){result->
-            binding.progressBar.showIf { result is Resource.Loading }
             when (result){
                 is Resource.Loading -> {
+                    loadingDialog.startLoadingDialog()
                     binding.btnCloseSession.disable()
                 }
                 is Resource.Success->{
+                    loadingDialog.dismissDialog()
                     if(result.data.success){
                         binding.btnCloseSession.disable()
                         clearSessionPreference()
@@ -89,6 +94,7 @@ class MenuFragment : Fragment() {
                     }
                 }
                 is Resource.Failure->{
+                    loadingDialog.dismissDialog()
                     requireContext().toast("Hubo un erro de conexión")
                 }
             }

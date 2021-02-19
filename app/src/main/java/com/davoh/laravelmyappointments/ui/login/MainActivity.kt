@@ -11,6 +11,7 @@ import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.ActivityMainBinding
 import com.davoh.laravelmyappointments.io.response.LoginResponse
+import com.davoh.laravelmyappointments.ui.dialogs.LoadingDialog
 import com.davoh.laravelmyappointments.ui.menu.MenuActivity
 import com.davoh.laravelmyappointments.ui.register.RegisterActivity
 import com.davoh.laravelmyappointments.ui.viewModels.LoginViewModel
@@ -34,11 +35,14 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel : LoginViewModel by viewModels()
 
+    private lateinit var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        loadingDialog = LoadingDialog(this)
 
         val preferences = PreferenceHelper.defaultPrefs(this)
         if(preferences["accessToken",""].contains(".")){
@@ -67,14 +71,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.postLogin(email,password).observe(this){ result ->
-            binding.progressBar.showIf { result is Resource.Loading }
             binding.btnLogin.disableIf { result is Resource.Loading }
-
             when(result){
                 is Resource.Loading->{
-                    toast("Cargando...")
+                    loadingDialog.startLoadingDialog()
                 }
                 is Resource.Success->{
+                    loadingDialog.dismissDialog()
                     if(result.data.success){
                         binding.btnLogin.disable()
                         createSessionPreference(result.data.accessToken)
@@ -85,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 is Resource.Failure->{
+                    loadingDialog.dismissDialog()
                     //binding.btnLogin.isEnabled = true
                     toast("Hubo un erro de conexión")
                 }
