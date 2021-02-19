@@ -45,5 +45,8 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
             scheduledTime,
             type)
 
+     fun register(email:String,name:String,password:String,passwordConfirmation: String) =
+         networkDataSource.register(email, name, password, passwordConfirmation)
+
 
 }

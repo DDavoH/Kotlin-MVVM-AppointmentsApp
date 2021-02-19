@@ -124,4 +124,14 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
+    fun register(email:String,name:String,password:String,passwordConfirmation: String): Flow<Resource<LoginResponse>> =
+        callbackFlow<Resource<LoginResponse>>{
+            try{
+                offer(Resource.Success(laravelApiService.register(email, name, password, passwordConfirmation).await()))
+            }catch (e: Exception){
+                offer(Resource.Failure(e))
+            }
+            awaitClose { close() }
+        }
+
 }
