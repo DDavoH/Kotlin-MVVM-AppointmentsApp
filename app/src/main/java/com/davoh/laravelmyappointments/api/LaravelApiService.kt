@@ -38,7 +38,7 @@ interface LaravelApiService {
 
     @POST("appointments")
     @Headers("Accept: application/json")
-    fun storeAppointments(
+    fun storeAppointment(
         @Header("Authorization") authHeader:String,
         @Query("description") description:String,
         @Query("specialty_id") specialtyId:Int,

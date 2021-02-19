@@ -24,5 +24,26 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
 
       fun getAppointments(authHeader:String) = networkDataSource.getAppointments(authHeader)
 
+      fun getSpecialties() = networkDataSource.getSpecialties()
+
+      fun getDoctors(specialtyId: Int) = networkDataSource.getDoctors(specialtyId)
+
+      fun getHours(doctorId: Int, date:String) = networkDataSource.getHours(doctorId,date)
+
+      fun storeAppointment(authHeader:String,
+                            description:String,
+                            specialtyId:Int,
+                            doctorId:Int,
+                            scheduledDate:String,
+                            scheduledTime:String,
+                            type:String) =
+            networkDataSource.storeAppointment(authHeader,
+            description,
+            specialtyId,
+            doctorId,
+            scheduledDate,
+            scheduledTime,
+            type)
+
 
 }

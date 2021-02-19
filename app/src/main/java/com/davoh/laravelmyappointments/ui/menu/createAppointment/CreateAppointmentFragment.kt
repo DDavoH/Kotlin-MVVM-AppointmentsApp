@@ -13,16 +13,21 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.api.LaravelApiService
+import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.FragmentCreateAppointmentBinding
 import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import com.davoh.laravelmyappointments.data.model.Doctor
 import com.davoh.laravelmyappointments.data.model.Schedule
 import com.davoh.laravelmyappointments.data.model.Specialty
+import com.davoh.laravelmyappointments.ui.viewModels.CreateAppointmentViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
+import com.davoh.laravelmyappointments.utils.disable
+import com.davoh.laravelmyappointments.utils.disableIf
 import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.snackbar.Snackbar
@@ -36,6 +41,8 @@ import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class CreateAppointmentFragment : Fragment() {
+
+    private val viewModel: CreateAppointmentViewModel by viewModels()
 
     private var _binding: FragmentCreateAppointmentBinding? = null
     private val binding get() = _binding!!
@@ -98,49 +105,38 @@ class CreateAppointmentFragment : Fragment() {
 
     private fun performStoreAppointment(){
 
-        binding.btnConfirmAppointment.isClickable = false
-
         val preferences= PreferenceHelper.defaultPrefs(requireContext())
         val accessToken = preferences["accessToken",""]
         val authHeader = "Bearer $accessToken"
 
-         val call = apIService.storeAppointments(
-                    authHeader,
-                    binding.tvConfirmDescription.text.toString(),
-                    _specialtyId,
-                    _doctorId,
-                    binding.tvConfirmScheduledDate.text.toString(),
-                    binding.tvConfirmScheduledTime.text.toString(),
-                    binding.tvConfirmType.text.toString()
-          )
 
-        call.enqueue(object: Callback<SimpleResponse>{
-            override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>) {
+        viewModel.storeAppointment(authHeader,
+            binding.tvConfirmDescription.text.toString(),
+            _specialtyId,
+            _doctorId,
+            binding.tvConfirmScheduledDate.text.toString(),
+            binding.tvConfirmScheduledTime.text.toString(),
+            binding.tvConfirmType.text.toString()).observe(viewLifecycleOwner){result->
 
-                if(response.isSuccessful){
+            binding.btnConfirmAppointment.disableIf { result is Resource.Loading }
+
+            when(result){
+                is Resource.Loading->{
+
+                }
+                is Resource.Success->{
+                    binding.btnConfirmAppointment.disable()
                     requireContext().toast("Cita registrada correctamente")
                     findNavController().navigateUp()
-                }else{
-                    requireContext().toast("Ocurrio un error")
-                    binding.btnConfirmAppointment.isClickable = true
                 }
-
+                is Resource.Failure->{
+                    requireContext().toast("Ocurrio un error")
+                }
             }
-
-            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
-                requireContext().toast("Ocurrio un error")
-                binding.btnConfirmAppointment.isClickable = true
-            }
-        })
+        }
 
 
     }
-
-    //INITIALIZE APISERVICE
-    private val apIService: LaravelApiService by lazy {
-        LaravelApiService.create()
-    }
-    //INITIALIZE APISERVICE
 
     //[SPECIALTIES SPINNER]
     private fun spinnerSpecialties() {
@@ -148,35 +144,31 @@ class CreateAppointmentFragment : Fragment() {
     }
 
     private fun loadSpecialtiesRetrofit() {
-        val call = apIService.getSpecialties()
-        call.enqueue(object : Callback<ArrayList<Specialty>> {
-            override fun onResponse(
-                    all: Call<ArrayList<Specialty>>,
-                    response: Response<ArrayList<Specialty>>
-            ) {
-                if (response.isSuccessful) {
+        viewModel.getSpecialties().observe(viewLifecycleOwner){result->
+            when(result){
+                is Resource.Loading->{
 
+                }
+                is Resource.Success->{
                     var specialties= ArrayList<Specialty>()
 
-                    if(response.body()==null){
-                        specialties.add(Specialty(555,"No se ha encontrado ninguna especialidad"))
+                    if(result.data.size>0){
+                        specialties = result.data
                     }else{
-                        specialties = response.body()!!
+                        specialties.add(Specialty(555,"No se ha encontrado ninguna especialidad"))
                     }
                     showSpinnerSpecialties(specialties)
                 }
-            }
-
-            override fun onFailure(call: Call<ArrayList<Specialty>>, t: Throwable) {
-                Toast.makeText(
+                is Resource.Failure->{
+                    Toast.makeText(
                         requireContext(),
-                        "Ocurrio un problema al cargar las especialidades $t",
+                        "Ocurrio un problema al cargar las especialidades",
                         Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigateUp()
+                    ).show()
+                    findNavController().navigateUp()
+                }
             }
-
-        })
+        }
     }
 
     private fun showSpinnerSpecialties(specialtiesList: ArrayList<Specialty>){
@@ -199,37 +191,33 @@ class CreateAppointmentFragment : Fragment() {
     }
 
     private fun loadDoctorsRetrofit(doctorId: Int){
-        val call = apIService.getDoctors(doctorId)
-        call.enqueue(object : Callback<ArrayList<Doctor>> {
-            override fun onResponse(
-                    all: Call<ArrayList<Doctor>>,
-                    response: Response<ArrayList<Doctor>>
-            ) {
-                if (response.isSuccessful) {
+        viewModel.getDoctors(doctorId).observe(viewLifecycleOwner){result->
+            when(result){
+                is Resource.Loading->{
 
+                }
+                is Resource.Success->{
                     var doctors = ArrayList<Doctor>()
 
-                    if (response.body() == null) {
-                        doctors.add(Doctor(555, "No se ha encontrado ninguna especialidad"))
+                    if (result.data.size>0) {
+                        doctors = result.data
                     } else {
-                        doctors = response.body()!!
+                        doctors.add(Doctor(555, "No se ha encontrado ningun doctor"))
                     }
                     Log.d(TAG, "onResponse: $doctors")
 
                     showSpinnerDoctors(doctors)
                 }
-            }
-
-            override fun onFailure(call: Call<ArrayList<Doctor>>, t: Throwable) {
-                Toast.makeText(
+                is Resource.Failure->{
+                    Toast.makeText(
                         requireContext(),
                         "Ocurrio un problema al cargar los doctores",
                         Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigateUp()
+                    ).show()
+                    findNavController().navigateUp()
+                }
             }
-
-        })
+        }
     }
 
     private fun showSpinnerDoctors(doctorsList: ArrayList<Doctor>) {
@@ -319,13 +307,15 @@ class CreateAppointmentFragment : Fragment() {
             return
         }
 
-        val call = apIService.getHours(doctorId,date)
-        call.enqueue(object : Callback<Schedule> {
-            override fun onResponse(call: Call<Schedule>, response: Response<Schedule>) {
-                if(response.isSuccessful){
-                    val schedule = response.body()
+        viewModel.getHours(doctorId, date).observe(viewLifecycleOwner){result->
+            when(result){
+                is Resource.Loading->{
 
-                    schedule?.let { scheduleHours ->
+                }
+                is Resource.Success->{
+                    val schedule = result.data
+
+                    schedule.let { scheduleHours ->
                         val intervals = scheduleHours.morning + scheduleHours.afternoon
                         val hours = ArrayList<String>()
                         intervals.forEach{ interval ->
@@ -334,12 +324,11 @@ class CreateAppointmentFragment : Fragment() {
                         displayIntervalsRadioButtons(hours)
                     }
                 }
+                is Resource.Failure->{
+                    requireContext().toast("No se han podido cargar las horas")
+                }
             }
-
-            override fun onFailure(call: Call<Schedule>, t: Throwable) {
-                Toast.makeText(requireContext(), "No se han podido cargar las horas", Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
     //[LISTEN]
 
