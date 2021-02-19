@@ -2,6 +2,7 @@ package com.davoh.laravelmyappointments.api
 
 
 import com.davoh.laravelmyappointments.core.Resource
+import com.davoh.laravelmyappointments.data.model.Appointment
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,6 +49,16 @@ class NetworkDataSource @Inject constructor(
             try {
                 offer(Resource.Success(laravelApiService.postLogout(authHeader).await()))
             }catch (e: Exception){
+                offer(Resource.Failure(e))
+            }
+            awaitClose { close() }
+        }
+
+    fun getAppointments(authHeader:String): Flow<Resource<ArrayList<Appointment>>> =
+        callbackFlow<Resource<ArrayList<Appointment>>>{
+            try{
+                offer(Resource.Success(laravelApiService.getAppointments(authHeader).await()))
+            }catch (e:Exception){
                 offer(Resource.Failure(e))
             }
             awaitClose { close() }

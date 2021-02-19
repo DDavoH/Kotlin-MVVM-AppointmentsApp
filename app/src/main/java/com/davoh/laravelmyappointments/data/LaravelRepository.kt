@@ -22,5 +22,7 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
 
       fun postLogout(authHeader: String) = networkDataSource.postLogout(authHeader)
 
+      fun getAppointments(authHeader:String) = networkDataSource.getAppointments(authHeader)
+
 
 }
