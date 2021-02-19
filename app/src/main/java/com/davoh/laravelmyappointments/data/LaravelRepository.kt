@@ -16,8 +16,9 @@ import javax.inject.Inject
 
 class LaravelRepository @Inject constructor(private val networkDataSource: NetworkDataSource)  {
 
-      fun postLogin(email: String, password: String) = networkDataSource.postLoginn(email, password)
+      fun postLogin(email: String, password: String) = networkDataSource.postLogin(email, password)
 
+      fun postToken(authHeader:String, deviceToken:String?) = networkDataSource.postToken(authHeader, deviceToken)
 
 
 }

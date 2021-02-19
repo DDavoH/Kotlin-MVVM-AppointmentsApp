@@ -61,8 +61,8 @@ interface LaravelApiService {
     @Headers("Accept: application/json") //Esto es para que no devuelva el html entero
     fun postToken(
         @Header("Authorization") authHeader:String,
-        @Query("device_token") email:String?
-    ): Call<Void>
+        @Query("device_token") deviceToken:String?
+    ): Call<SimpleResponse>
 
     companion object {
         private const val BASE_URL = "http://alexadavoh.servehttp.com/api/"

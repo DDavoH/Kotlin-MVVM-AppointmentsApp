@@ -3,6 +3,7 @@ package com.davoh.laravelmyappointments.api
 
 import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.io.response.LoginResponse
+import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
@@ -20,13 +21,23 @@ class NetworkDataSource @Inject constructor(
     private val laravelApiService: LaravelApiService
 ) {
 
-     fun postLoginn(email: String, password: String): Flow<Resource<LoginResponse>> =
+     fun postLogin(email: String, password: String): Flow<Resource<LoginResponse>> =
         callbackFlow<Resource<LoginResponse>>{
             try {
                 offer(
                     Resource.Success(laravelApiService.postLogin(email, password).await())
                 )
             } catch (e: Exception) {
+                offer(Resource.Failure(e))
+            }
+            awaitClose { close() }
+        }
+
+    fun postToken(authHeader:String, deviceToken:String?): Flow<Resource<SimpleResponse>> =
+        callbackFlow<Resource<SimpleResponse>> {
+            try{
+                offer(Resource.Success(laravelApiService.postToken(authHeader,deviceToken).await()))
+            }catch (e: Exception){
                 offer(Resource.Failure(e))
             }
             awaitClose { close() }

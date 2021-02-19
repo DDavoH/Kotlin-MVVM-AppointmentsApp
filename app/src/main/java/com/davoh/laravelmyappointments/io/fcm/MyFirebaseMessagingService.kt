@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.api.LaravelApiService
+import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import com.davoh.laravelmyappointments.ui.login.MainActivity
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
@@ -135,8 +136,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             val call = apiService.postToken(authHeader, token)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            call.enqueue(object : Callback<SimpleResponse> {
+                override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>) {
                     if (response.isSuccessful) {
                         Log.d("MyFirebaseMsgService", "Token registrado correctamente")
                     } else {
@@ -144,7 +145,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 }
 
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                     toast("error: $t")
                 }
             })

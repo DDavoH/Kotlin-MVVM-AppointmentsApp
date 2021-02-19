@@ -4,6 +4,7 @@ package com.davoh.laravelmyappointments.ui.menu
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -12,7 +13,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.api.LaravelApiService
+import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.ActivityMenuBinding
+import com.davoh.laravelmyappointments.ui.viewModels.MenuViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
 import com.davoh.laravelmyappointments.utils.toast
@@ -31,13 +34,12 @@ class MenuActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMenuBinding
 
+    private val viewModel : MenuViewModel by viewModels()
+
     private val snackBar by lazy{
         Snackbar.make(binding.mainLayout, R.string.press_back_again, Snackbar.LENGTH_SHORT)
     }
 
-    private val apiService by lazy{
-        LaravelApiService.create()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +49,7 @@ class MenuActivity : AppCompatActivity() {
 
         val storeToken = intent.getBooleanExtra("store_token",false)
         if(storeToken){
-            storeToken()
+            storeFcmToken()
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -58,7 +60,7 @@ class MenuActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
-    private fun storeToken(){
+    private fun storeFcmToken(){
         val preferences = PreferenceHelper.defaultPrefs(this)
         val accessToken = preferences["accessToken",""]
         val authHeader = "Bearer $accessToken"
@@ -76,23 +78,20 @@ class MenuActivity : AppCompatActivity() {
             // Log and toast
             val msg = getString(R.string.msg_token_fmt, deviceToken)
             Log.d("MyFirebaseMsgService", msg)
-           // Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 
-            val call = apiService.postToken(authHeader, deviceToken)
+            viewModel.postToken(authHeader, deviceToken).observe(this){ result->
+                when(result){
+                    is Resource.Loading->{
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
+                    }
+                    is Resource.Success->{
                         Log.d(TAG, "Token registrado correctamente")
-                    } else {
+                    }
+                    is Resource.Failure->{
                         Log.d(TAG, "Hubo un error al registrar el token")
                     }
                 }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    toast("error: $t")
-                }
-            })
+            }
 
         })
 
@@ -163,7 +162,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "MenuActivity"
+        private const val TAG = "okhttp"
     }
 
 }
