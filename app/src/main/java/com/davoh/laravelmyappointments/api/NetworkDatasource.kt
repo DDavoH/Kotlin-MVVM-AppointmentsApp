@@ -43,4 +43,14 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
+    fun postLogout(authHeader:String): Flow<Resource<SimpleResponse>> =
+        callbackFlow<Resource<SimpleResponse>>{
+            try {
+                offer(Resource.Success(laravelApiService.postLogout(authHeader).await()))
+            }catch (e: Exception){
+                offer(Resource.Failure(e))
+            }
+            awaitClose { close() }
+        }
+
 }

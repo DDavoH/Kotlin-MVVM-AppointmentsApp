@@ -6,14 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.api.LaravelApiService
+import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.FragmentMenuBinding
 import com.davoh.laravelmyappointments.ui.login.MainActivity
+import com.davoh.laravelmyappointments.ui.viewModels.MenuViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
+import com.davoh.laravelmyappointments.utils.disable
+import com.davoh.laravelmyappointments.utils.showIf
+import com.davoh.laravelmyappointments.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +31,8 @@ class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: MenuViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +65,6 @@ class MenuFragment : Fragment() {
     }
 
     //[LOGOUT]
-    private val apiService by lazy{
-        LaravelApiService.create()
-    }
-
     private fun performLogout(){
         val preferences = PreferenceHelper.defaultPrefs(requireContext())
         val jwt = preferences["accessToken",""]
@@ -68,22 +73,26 @@ class MenuFragment : Fragment() {
 
     //despues cierro la session para no aceptas ningun token
     private fun closeSessionInLaravel(jwt: String){
-        val call = apiService.postLogout("Bearer $jwt")
-        call.enqueue(object: Callback<Void>{
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if(response.isSuccessful){
-                    clearSessionPreference()
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
+        viewModel.postLogout("Bearer $jwt").observe(viewLifecycleOwner){result->
+            binding.progressBar.showIf { result is Resource.Loading }
+            when (result){
+                is Resource.Loading -> {
+                    binding.btnCloseSession.disable()
+                }
+                is Resource.Success->{
+                    if(result.data.success){
+                        binding.btnCloseSession.disable()
+                        clearSessionPreference()
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
+                is Resource.Failure->{
+                    requireContext().toast("Hubo un erro de conexión")
                 }
             }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-
-            }
-
-        })
+        }
     }
 
     private fun clearSessionPreference() {

@@ -20,5 +20,7 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
 
       fun postToken(authHeader:String, deviceToken:String?) = networkDataSource.postToken(authHeader, deviceToken)
 
+      fun postLogout(authHeader: String) = networkDataSource.postLogout(authHeader)
+
 
 }

@@ -31,7 +31,7 @@ interface LaravelApiService {
                   @Query("password") password:String) : Call<LoginResponse>
 
     @POST("logout")
-    fun postLogout(@Header("Authorization") authHeader:String) : Call<Void>
+    fun postLogout(@Header("Authorization") authHeader:String) : Call<SimpleResponse>
 
     @GET("appointments")
     fun getAppointments(@Header("Authorization") authHeader:String) : Call<ArrayList<Appointment>>

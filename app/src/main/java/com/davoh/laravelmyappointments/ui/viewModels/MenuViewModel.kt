@@ -21,4 +21,15 @@ class MenuViewModel @Inject constructor(private val repository: LaravelRepositor
                 emit(Resource.Failure(e))
             }
         }
+
+    fun postLogout(authHeader: String): LiveData<Resource<SimpleResponse>> =
+        liveData<Resource<SimpleResponse>>(viewModelScope.coroutineContext + Dispatchers.IO){
+            emit(Resource.Loading())
+            try {
+                val response = repository.postLogout(authHeader).asLiveData()
+                emitSource(response)
+            } catch (e: Exception) {
+                emit(Resource.Failure(e))
+            }
+        }
 }
