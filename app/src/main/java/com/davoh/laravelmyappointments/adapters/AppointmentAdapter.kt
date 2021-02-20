@@ -31,11 +31,20 @@ class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : Rec
                 tvDescription.text = appointment.description
                 tvType.text = appointment.type
 
-            val formatter = SimpleDateFormat("dd/MMMM/yyyy", Locale.getDefault())
-            val calendar: Calendar = Calendar.getInstance()
-            calendar.timeInMillis = appointment.createdAt
-
-            tvCreatedAt.text = "Cita registrada el dia  ${formatter.format(calendar.time)} "
+            when(appointment.status){
+                "Reservada"->{
+                    statusMiniCard.setBackgroundResource(R.color.orange_200)
+                }
+                "Confirmada"->{
+                    statusMiniCard.setBackgroundResource(R.color.blue_200)
+                }
+                "Cancelada"->{
+                    statusMiniCard.setBackgroundResource(R.color.red_200)
+                }
+                "Atendida"->{
+                    statusMiniCard.setBackgroundResource(R.color.green_200)
+                }
+            }
 
             btnShowDetails.setOnClickListener {
 
@@ -52,6 +61,12 @@ class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : Rec
                 }
 
             }
+
+            val formatter = SimpleDateFormat("dd/MMMM/yyyy", Locale.getDefault())
+            val calendar: Calendar = Calendar.getInstance()
+            calendar.timeInMillis = appointment.createdAt
+
+            tvCreatedAt.text = "Cita registrada el dia  ${formatter.format(calendar.time)} "
         }
 
     }

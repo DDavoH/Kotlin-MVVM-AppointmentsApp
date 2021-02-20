@@ -14,9 +14,19 @@
     <color name="blue_700">#0071CA</color>
 
     <!--Complementary colors-->
-    <color name="orange_700">#f98403</color>
-    <color name="orange_500">#ffa008</color>
-    <color name="orange_200">#ffd083</color>
+    <color name="orange_700">#F57C00</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="orange_200">#FFCC80</color>
+
+    <!--Red-->
+    <color name="red_700">#D32F2F</color>
+    <color name="red_500">#F44336</color>
+    <color name="red_200">#EF9A9A</color>
+
+    <!--Green-->
+    <color name="green_700">#388E3C</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="green_200">#A5D6A7</color>
 
     <color name="test">#018786</color>
 

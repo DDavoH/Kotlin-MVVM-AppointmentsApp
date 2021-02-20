@@ -11,8 +11,8 @@
         app:cardCornerRadius="12dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         >
 
 
@@ -70,22 +70,45 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
-                      tools:ignore="UselessParent">
+                      >
 
-                  <TextView
-                      android:id="@+id/tvStatus"
+                  <androidx.cardview.widget.CardView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_gravity="center"
-                      android:textColor="@color/black"
-                      tools:text="Reservada"
-                      android:textSize="14sp"
-                      />
+                      app:cardCornerRadius="50dp"
+                      android:layout_margin="5dp"
+                      >
+
+                      <LinearLayout
+                          android:id="@+id/statusMiniCard"
+                          android:background="@color/orange_200"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          >
+
+                          <TextView
+                              android:layout_margin="4dp"
+                              android:id="@+id/tvStatus"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_gravity="center"
+                              android:textColor="@color/black"
+                              tools:text="Reservada"
+                              android:textSize="14sp"
+                              />
+
+                      </LinearLayout>
+
+
+
+                  </androidx.cardview.widget.CardView>
+
 
                   <ImageButton
                       android:id="@+id/btnShowDetails"
                       android:background="@color/white"
-                      android:layout_gravity="end"
+                      android:layout_gravity="end|center_vertical"
                       android:src="@drawable/ic_expand_more"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"/>
