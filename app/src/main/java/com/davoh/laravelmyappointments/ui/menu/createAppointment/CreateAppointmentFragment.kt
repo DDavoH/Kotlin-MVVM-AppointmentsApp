@@ -100,9 +100,10 @@ class CreateAppointmentFragment : Fragment() {
         viewModel.getSpecialties().observe(viewLifecycleOwner){result->
             when(result){
                 is Resource.Loading->{
-
+                    loadingDialog.startLoadingDialog()
                 }
                 is Resource.Success->{
+                    loadingDialog.dismissDialog()
                     var specialties= ArrayList<Specialty>()
 
                     if(result.data.size>0){
@@ -113,6 +114,7 @@ class CreateAppointmentFragment : Fragment() {
                     showSpinnerSpecialties(specialties)
                 }
                 is Resource.Failure->{
+                    loadingDialog.dismissDialog()
                     Toast.makeText(
                         requireContext(),
                         "Ocurrio un problema al cargar las especialidades",
@@ -157,9 +159,10 @@ class CreateAppointmentFragment : Fragment() {
         viewModel.getDoctors(doctorId).observe(viewLifecycleOwner){result->
             when(result){
                 is Resource.Loading->{
-
+                    loadingDialog.startLoadingDialog()
                 }
                 is Resource.Success->{
+                    loadingDialog.dismissDialog()
                     var doctors = ArrayList<Doctor>()
 
                     if (result.data.size>0) {
@@ -172,6 +175,7 @@ class CreateAppointmentFragment : Fragment() {
                     showSpinnerDoctors(doctors)
                 }
                 is Resource.Failure->{
+                    loadingDialog.dismissDialog()
                     Toast.makeText(
                         requireContext(),
                         "Ocurrio un problema al cargar los doctores",
@@ -268,9 +272,10 @@ class CreateAppointmentFragment : Fragment() {
         viewModel.getHours(doctorId, date).observe(viewLifecycleOwner){result->
             when(result){
                 is Resource.Loading->{
-
+                    loadingDialog.startLoadingDialog()
                 }
                 is Resource.Success->{
+                    loadingDialog.dismissDialog()
                     val schedule = result.data
 
                     schedule.let { scheduleHours ->
@@ -283,6 +288,7 @@ class CreateAppointmentFragment : Fragment() {
                     }
                 }
                 is Resource.Failure->{
+                    loadingDialog.dismissDialog()
                     requireContext().toast("No se han podido cargar las horas")
                 }
             }
