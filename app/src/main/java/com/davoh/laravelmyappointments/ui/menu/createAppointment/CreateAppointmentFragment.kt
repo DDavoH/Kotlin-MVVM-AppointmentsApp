@@ -16,12 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.davoh.laravelmyappointments.R
-import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.core.Resource
 import com.davoh.laravelmyappointments.databinding.FragmentCreateAppointmentBinding
-import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import com.davoh.laravelmyappointments.data.model.Doctor
-import com.davoh.laravelmyappointments.data.model.Schedule
 import com.davoh.laravelmyappointments.data.model.Specialty
 import com.davoh.laravelmyappointments.io.body.StoreAppointment
 import com.davoh.laravelmyappointments.ui.dialogs.LoadingDialog
@@ -34,12 +31,8 @@ import com.davoh.laravelmyappointments.utils.toast
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class CreateAppointmentFragment : Fragment() {
@@ -51,14 +44,10 @@ class CreateAppointmentFragment : Fragment() {
 
     private lateinit var loadingDialog: LoadingDialog
 
-    //Public values
-    private var _specialtyId by Delegates.notNull<Int>()
-    private var _doctorId by Delegates.notNull<Int>()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var _specialtyId:Int ?= null
+    private var _doctorId:Int ?= null
+    private var selectedTimeRadioBtn: RadioButton? = null
+    private val selectedCalendar = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCreateAppointmentBinding.inflate(inflater, container, false)
@@ -67,6 +56,7 @@ class CreateAppointmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         loadingDialog = LoadingDialog(requireActivity())
 
         binding.btnNextStep.setOnClickListener {
@@ -79,7 +69,6 @@ class CreateAppointmentFragment : Fragment() {
         }
 
         binding.btnNextStep2.setOnClickListener {
-
             when {
                 binding.etDate.text.toString().isEmpty() -> {
                     binding.etDate.error = "Es necesario seleccionar una fecha"
@@ -93,66 +82,21 @@ class CreateAppointmentFragment : Fragment() {
                     binding.cardStepConfirmation.visibility = View.VISIBLE
                 }
             }
-
         }
 
         binding.btnConfirmAppointment.setOnClickListener {
             performStoreAppointment()
         }
 
-        spinnerSpecialties()
-        spinnerDoctors()
+        loadSpecialtiesByRetrofit()
+        listenSpecialtyChanges()
         datePicker()
         listenDoctorsAndDateChanges()
         alertDialogExit()
     }
 
-    private fun performStoreAppointment(){
-
-        val preferences= PreferenceHelper.defaultPrefs(requireContext())
-        val accessToken = preferences["accessToken",""]
-        val authHeader = "Bearer $accessToken"
-
-        val storeAppointment =
-            StoreAppointment(
-            binding.tvConfirmDescription.text.toString(),
-            _specialtyId,
-            _doctorId,
-            binding.tvConfirmScheduledDate.text.toString(),
-            binding.tvConfirmScheduledTime.text.toString(),
-            binding.tvConfirmType.text.toString()
-        )
-
-        viewModel.storeAppointment(authHeader, storeAppointment).observe(viewLifecycleOwner){result->
-
-            binding.btnConfirmAppointment.disableIf { result is Resource.Loading }
-
-            when(result){
-                is Resource.Loading->{
-                    loadingDialog.startLoadingDialog()
-                }
-                is Resource.Success->{
-                    loadingDialog.dismissDialog()
-                    binding.btnConfirmAppointment.disable()
-                    requireContext().toast("Cita registrada correctamente")
-                    findNavController().navigateUp()
-                }
-                is Resource.Failure->{
-                    loadingDialog.dismissDialog()
-                    requireContext().toast("Ocurrio un error")
-                }
-            }
-        }
-
-
-    }
-
     //[SPECIALTIES SPINNER]
-    private fun spinnerSpecialties() {
-        loadSpecialtiesRetrofit()
-    }
-
-    private fun loadSpecialtiesRetrofit() {
+    private fun loadSpecialtiesByRetrofit() {
         viewModel.getSpecialties().observe(viewLifecycleOwner){result->
             when(result){
                 is Resource.Loading->{
@@ -187,19 +131,29 @@ class CreateAppointmentFragment : Fragment() {
     }
     //[SPECIALTIES SPINNER]
 
-    //[DOCTORS SPINNER]}
-    private fun spinnerDoctors(){
-        //FirstListening SpecialtySpinner
+    //[DOCTORS SPINNER]
+    private fun listenSpecialtyChanges(){
         binding.spinnerSpecialty.onItemClickListener = AdapterView.OnItemClickListener {
             parent, view, position, id ->
             val specialtySelected = parent?.getItemAtPosition(position) as Specialty
-            loadDoctorsRetrofit(specialtySelected.id)
+            clearDoctorNameAndDate()
+            loadDoctorsByRetrofit(specialtySelected.id)
             _specialtyId = specialtySelected.id
         }
-
     }
 
-    private fun loadDoctorsRetrofit(doctorId: Int){
+    private fun clearDoctorNameAndDate(){
+        binding.spinnerDoctor.setText("") //Clean spinner
+        binding.etDate.setText("")
+        selectedTimeRadioBtn = null
+        binding.radioGroupDateTime.removeAllViews()
+        binding.radioGroupDateTime2.removeAllViews()
+        binding.tvAlertHours.visibility = View.VISIBLE
+        binding.tvAlertHours.text = "Seleccione un médico y una fecha para ver sus horas disponibles"
+        binding.tvAlertHours.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+    }
+
+    private fun loadDoctorsByRetrofit(doctorId: Int){
         viewModel.getDoctors(doctorId).observe(viewLifecycleOwner){result->
             when(result){
                 is Resource.Loading->{
@@ -234,11 +188,9 @@ class CreateAppointmentFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerDoctor.setAdapter(adapter)
     }
-    //[DOCTORS SPINNER]}
+    //[DOCTORS SPINNER]
 
     //[CALENDAR]
-    private val selectedCalendar = Calendar.getInstance()
-
     private fun datePicker() {
         binding.etDate.setOnClickListener {
 
@@ -260,21 +212,19 @@ class CreateAppointmentFragment : Fragment() {
 
             val datePickerDialog = DatePickerDialog(requireContext(), R.style.CalendarPicker, listener, year, month, dayOfMonth)
             val datePicker = datePickerDialog.datePicker
-            datePicker.minDate = getFechaLongStart()
-            datePicker.maxDate = getFechaLongEnd()
+            datePicker.minDate = getDateLongStart()
+            datePicker.maxDate = getDateLongEnd()
             datePickerDialog.show()
         }
     }
 
-    //Esta es la fecha de inicio para la busqueda
-    private fun getFechaLongStart(): Long {
+    private fun getDateLongStart(): Long {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_MONTH, 1)
         return calendar.timeInMillis
     }
 
-    //Esta es la fecha de termino para la busqueda
-    private fun getFechaLongEnd(): Long {
+    private fun getDateLongEnd(): Long {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_MONTH, 29)
         return calendar.timeInMillis
@@ -283,7 +233,7 @@ class CreateAppointmentFragment : Fragment() {
     private fun Int.twoDigits() = if (this >= 10) this.toString() else "0$this"
     //[CALENDAR]
 
-    //[LISTEN]
+    //[LISTENERS]
     private fun listenDoctorsAndDateChanges(){
         var doctorGlobal = Doctor(1,"")
 
@@ -311,7 +261,6 @@ class CreateAppointmentFragment : Fragment() {
     }
 
     private fun loadHours(doctorId: Int, date:String){
-
         if(date.isEmpty()){
             return
         }
@@ -339,12 +288,10 @@ class CreateAppointmentFragment : Fragment() {
             }
         }
     }
-    //[LISTEN]
+    //[LISTENERS]
 
-    //[RADIO BUTTONS - parent CALENDAR]
-    private var selectedTimeRadioBtn: RadioButton? = null
+    //[RADIO BUTTONS]
     private fun displayIntervalsRadioButtons(hours: ArrayList<String>) {
-
         selectedTimeRadioBtn = null
         binding.radioGroupDateTime.removeAllViews()
         binding.radioGroupDateTime2.removeAllViews()
@@ -357,9 +304,7 @@ class CreateAppointmentFragment : Fragment() {
             return
         }
 
-        //TODO ELEGIR EL COLOR POR DEFECTO
         binding.tvAlertHours.visibility = View.GONE
-
 
         hours.forEach {
             val radioButton = MaterialRadioButton(requireContext(), null, R.attr.radioButtonStyle)
@@ -378,16 +323,13 @@ class CreateAppointmentFragment : Fragment() {
                 binding.radioGroupDateTime2.addView(radioButton)
             }
             goToLeft = !goToLeft
-
         }
-
     }
-    //[RADIO BUTTONS - parent CALENDAR]
+    //[RADIO BUTTONS]
 
     private fun showAppointmentDataToConfirm() {
         binding.tvConfirmDescription.text = binding.etDescription.text.toString()
         binding.tvConfirmSpecialty.text = binding.spinnerSpecialty.text.toString()
-
 
         val selectedRadioBtnId = binding.radioGroupType.checkedRadioButtonId
         val selectedRadioType = binding.radioGroupType.findViewById<RadioButton>(selectedRadioBtnId)
@@ -398,10 +340,44 @@ class CreateAppointmentFragment : Fragment() {
         binding.tvConfirmScheduledTime.text = selectedTimeRadioBtn?.text.toString()
     }
 
+    private fun performStoreAppointment(){
+        val preferences= PreferenceHelper.defaultPrefs(requireContext())
+        val accessToken = preferences["accessToken",""]
+        val authHeader = "Bearer $accessToken"
+
+        val storeAppointment =
+            StoreAppointment(
+                binding.tvConfirmDescription.text.toString().trim(),
+                _specialtyId!!,
+                _doctorId!!,
+                binding.tvConfirmScheduledDate.text.toString().trim(),
+                binding.tvConfirmScheduledTime.text.toString().trim(),
+                binding.tvConfirmType.text.toString().trim()
+            )
+
+        viewModel.storeAppointment(authHeader, storeAppointment).observe(viewLifecycleOwner){result->
+            binding.btnConfirmAppointment.disableIf { result is Resource.Loading }
+            when(result){
+                is Resource.Loading->{
+                    loadingDialog.startLoadingDialog()
+                }
+                is Resource.Success->{
+                    loadingDialog.dismissDialog()
+                    binding.btnConfirmAppointment.disable()
+                    requireContext().toast("Cita registrada correctamente")
+                    findNavController().navigateUp()
+                }
+                is Resource.Failure->{
+                    loadingDialog.dismissDialog()
+                    requireContext().toast("Ocurrio un error")
+                }
+            }
+        }
+    }
+
     private fun alertDialogExit() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
                 when {
                     binding.cardStepConfirmation.visibility == View.VISIBLE -> {
                         binding.cardStepConfirmation.visibility = View.GONE
