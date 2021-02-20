@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.api.NetworkDataSource
 import com.davoh.laravelmyappointments.core.Resource
+import com.davoh.laravelmyappointments.io.body.StoreAppointment
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,20 +31,8 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
 
       fun getHours(doctorId: Int, date:String) = networkDataSource.getHours(doctorId,date)
 
-      fun storeAppointment(authHeader:String,
-                            description:String,
-                            specialtyId:Int,
-                            doctorId:Int,
-                            scheduledDate:String,
-                            scheduledTime:String,
-                            type:String) =
-            networkDataSource.storeAppointment(authHeader,
-            description,
-            specialtyId,
-            doctorId,
-            scheduledDate,
-            scheduledTime,
-            type)
+      fun storeAppointment(authHeader:String, storeAppointment: StoreAppointment) =
+            networkDataSource.storeAppointment(authHeader, storeAppointment)
 
      fun register(email:String,name:String,password:String,passwordConfirmation: String) =
          networkDataSource.register(email, name, password, passwordConfirmation)

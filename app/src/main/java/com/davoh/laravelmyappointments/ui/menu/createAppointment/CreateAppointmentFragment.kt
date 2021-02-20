@@ -23,6 +23,7 @@ import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import com.davoh.laravelmyappointments.data.model.Doctor
 import com.davoh.laravelmyappointments.data.model.Schedule
 import com.davoh.laravelmyappointments.data.model.Specialty
+import com.davoh.laravelmyappointments.io.body.StoreAppointment
 import com.davoh.laravelmyappointments.ui.viewModels.CreateAppointmentViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
@@ -109,14 +110,17 @@ class CreateAppointmentFragment : Fragment() {
         val accessToken = preferences["accessToken",""]
         val authHeader = "Bearer $accessToken"
 
-
-        viewModel.storeAppointment(authHeader,
+        val storeAppointment =
+            StoreAppointment(
             binding.tvConfirmDescription.text.toString(),
             _specialtyId,
             _doctorId,
             binding.tvConfirmScheduledDate.text.toString(),
             binding.tvConfirmScheduledTime.text.toString(),
-            binding.tvConfirmType.text.toString()).observe(viewLifecycleOwner){result->
+            binding.tvConfirmType.text.toString()
+        )
+
+        viewModel.storeAppointment(authHeader, storeAppointment).observe(viewLifecycleOwner){result->
 
             binding.btnConfirmAppointment.disableIf { result is Resource.Loading }
 

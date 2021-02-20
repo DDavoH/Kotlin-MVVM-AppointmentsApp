@@ -6,6 +6,7 @@ import com.davoh.laravelmyappointments.data.model.Appointment
 import com.davoh.laravelmyappointments.data.model.Doctor
 import com.davoh.laravelmyappointments.data.model.Schedule
 import com.davoh.laravelmyappointments.data.model.Specialty
+import com.davoh.laravelmyappointments.io.body.StoreAppointment
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -99,25 +100,10 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun storeAppointment(authHeader:String,
-                         description:String,
-                         specialtyId:Int,
-                         doctorId:Int,
-                         scheduledDate:String,
-                         scheduledTime:String,
-                         type:String): Flow<Resource<SimpleResponse>> =
+    fun storeAppointment(authHeader:String, storeAppointment: StoreAppointment): Flow<Resource<SimpleResponse>> =
         callbackFlow<Resource<SimpleResponse>>{
             try{
-                offer(
-                    Resource.Success(laravelApiService.storeAppointment(
-                        authHeader,
-                        description,
-                        specialtyId,
-                        doctorId,
-                        scheduledDate,
-                        scheduledTime,
-                        type).await())
-                )
+                offer(Resource.Success(laravelApiService.storeAppointment(authHeader, storeAppointment).await()))
             }catch (e: Exception){
                 offer(Resource.Failure(e))
             }

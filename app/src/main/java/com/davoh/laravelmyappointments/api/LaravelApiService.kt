@@ -6,6 +6,7 @@ import com.davoh.laravelmyappointments.data.model.Appointment
 import com.davoh.laravelmyappointments.data.model.Doctor
 import com.davoh.laravelmyappointments.data.model.Schedule
 import com.davoh.laravelmyappointments.data.model.Specialty
+import com.davoh.laravelmyappointments.io.body.StoreAppointment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -40,12 +41,7 @@ interface LaravelApiService {
     @Headers("Accept: application/json")
     fun storeAppointment(
         @Header("Authorization") authHeader:String,
-        @Query("description") description:String,
-        @Query("specialty_id") specialtyId:Int,
-        @Query("doctor_id") doctorId:Int,
-        @Query("scheduled_date") scheduledDate:String,
-        @Query("scheduled_time") scheduledTime:String,
-        @Query("type") type:String,
+        @Body storeAppointment: StoreAppointment
     ) : Call<SimpleResponse>
 
     @POST("register")
