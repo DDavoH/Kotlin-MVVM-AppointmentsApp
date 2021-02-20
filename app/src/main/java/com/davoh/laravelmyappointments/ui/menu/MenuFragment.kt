@@ -16,12 +16,9 @@ import com.davoh.laravelmyappointments.databinding.FragmentMenuBinding
 import com.davoh.laravelmyappointments.ui.dialogs.LoadingDialog
 import com.davoh.laravelmyappointments.ui.login.MainActivity
 import com.davoh.laravelmyappointments.ui.viewModels.MenuViewModel
-import com.davoh.laravelmyappointments.utils.PreferenceHelper
+import com.davoh.laravelmyappointments.utils.*
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.set
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
-import com.davoh.laravelmyappointments.utils.disable
-import com.davoh.laravelmyappointments.utils.showIf
-import com.davoh.laravelmyappointments.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
@@ -78,10 +75,10 @@ class MenuFragment : Fragment() {
     //despues cierro la session para no aceptas ningun token
     private fun closeSessionInLaravel(jwt: String){
         viewModel.postLogout("Bearer $jwt").observe(viewLifecycleOwner){result->
+            binding.btnCloseSession.disableIf { result is Resource.Loading }
             when (result){
                 is Resource.Loading -> {
                     loadingDialog.startLoadingDialog()
-                    binding.btnCloseSession.disable()
                 }
                 is Resource.Success->{
                     loadingDialog.dismissDialog()
