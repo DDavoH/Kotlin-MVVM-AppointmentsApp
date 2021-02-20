@@ -24,6 +24,7 @@ import com.davoh.laravelmyappointments.data.model.Doctor
 import com.davoh.laravelmyappointments.data.model.Schedule
 import com.davoh.laravelmyappointments.data.model.Specialty
 import com.davoh.laravelmyappointments.io.body.StoreAppointment
+import com.davoh.laravelmyappointments.ui.dialogs.LoadingDialog
 import com.davoh.laravelmyappointments.ui.viewModels.CreateAppointmentViewModel
 import com.davoh.laravelmyappointments.utils.PreferenceHelper
 import com.davoh.laravelmyappointments.utils.PreferenceHelper.get
@@ -48,6 +49,8 @@ class CreateAppointmentFragment : Fragment() {
     private var _binding: FragmentCreateAppointmentBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var loadingDialog: LoadingDialog
+
     //Public values
     private var _specialtyId by Delegates.notNull<Int>()
     private var _doctorId by Delegates.notNull<Int>()
@@ -62,8 +65,9 @@ class CreateAppointmentFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadingDialog = LoadingDialog(requireActivity())
 
         binding.btnNextStep.setOnClickListener {
             if (binding.etDescription.text.toString().length < 3) {
@@ -101,7 +105,6 @@ class CreateAppointmentFragment : Fragment() {
         datePicker()
         listenDoctorsAndDateChanges()
         alertDialogExit()
-
     }
 
     private fun performStoreAppointment(){
@@ -126,14 +129,16 @@ class CreateAppointmentFragment : Fragment() {
 
             when(result){
                 is Resource.Loading->{
-
+                    loadingDialog.startLoadingDialog()
                 }
                 is Resource.Success->{
+                    loadingDialog.dismissDialog()
                     binding.btnConfirmAppointment.disable()
                     requireContext().toast("Cita registrada correctamente")
                     findNavController().navigateUp()
                 }
                 is Resource.Failure->{
+                    loadingDialog.dismissDialog()
                     requireContext().toast("Ocurrio un error")
                 }
             }
