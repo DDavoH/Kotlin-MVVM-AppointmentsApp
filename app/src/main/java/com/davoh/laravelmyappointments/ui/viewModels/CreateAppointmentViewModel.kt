@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateAppointmentViewModel @Inject constructor(private val repository: LaravelRepository): ViewModel(){
 
-    fun getSpecialties(): LiveData<Resource<ArrayList<Specialty>>> =
+    fun getSpecialties() =
         liveData<Resource<ArrayList<Specialty>>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try {
@@ -26,7 +26,7 @@ class CreateAppointmentViewModel @Inject constructor(private val repository: Lar
             }
         }
 
-    fun getDoctors(specialtyId: Int): LiveData<Resource<ArrayList<Doctor>>> =
+    fun getDoctors(specialtyId: Int) =
         liveData<Resource<ArrayList<Doctor>>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try{
@@ -37,7 +37,7 @@ class CreateAppointmentViewModel @Inject constructor(private val repository: Lar
             }
         }
 
-    fun getHours(doctorId: Int, date:String): LiveData<Resource<Schedule>> =
+    fun getHours(doctorId: Int, date:String) =
         liveData<Resource<Schedule>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try{
@@ -48,7 +48,7 @@ class CreateAppointmentViewModel @Inject constructor(private val repository: Lar
             }
         }
 
-    fun storeAppointment(authHeader:String, storeAppointment: StoreAppointment): LiveData<Resource<SimpleResponse>> =
+    fun storeAppointment(authHeader:String, storeAppointment: StoreAppointment) =
         liveData<Resource<SimpleResponse>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try{

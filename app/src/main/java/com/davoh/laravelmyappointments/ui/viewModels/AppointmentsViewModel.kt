@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppointmentsViewModel @Inject constructor(private val repository: LaravelRepository): ViewModel() {
 
-    fun getAppointments(authHeader: String): LiveData<Resource<ArrayList<Appointment>>> =
+    fun getAppointments(authHeader: String) =
         liveData<Resource<ArrayList<Appointment>>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try {

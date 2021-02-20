@@ -28,7 +28,7 @@ class NetworkDataSource @Inject constructor(
     private val laravelApiService: LaravelApiService
 ) {
 
-     fun postLogin(email: String, password: String): Flow<Resource<LoginResponse>> =
+     fun postLogin(email: String, password: String) =
         callbackFlow<Resource<LoginResponse>>{
             try {
                 offer(
@@ -40,7 +40,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun postToken(authHeader:String, deviceToken:String?): Flow<Resource<SimpleResponse>> =
+    fun postToken(authHeader:String, deviceToken:String?) =
         callbackFlow<Resource<SimpleResponse>> {
             try{
                 offer(Resource.Success(laravelApiService.postToken(authHeader,deviceToken).await()))
@@ -50,7 +50,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun postLogout(authHeader:String): Flow<Resource<SimpleResponse>> =
+    fun postLogout(authHeader:String) =
         callbackFlow<Resource<SimpleResponse>>{
             try {
                 offer(Resource.Success(laravelApiService.postLogout(authHeader).await()))
@@ -60,7 +60,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun getAppointments(authHeader:String): Flow<Resource<ArrayList<Appointment>>> =
+    fun getAppointments(authHeader:String) =
         callbackFlow<Resource<ArrayList<Appointment>>>{
             try{
                 offer(Resource.Success(laravelApiService.getAppointments(authHeader).await()))
@@ -70,7 +70,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun getSpecialties(): Flow<Resource<ArrayList<Specialty>>> =
+    fun getSpecialties() =
         callbackFlow<Resource<ArrayList<Specialty>>> {
             try{
                 offer(Resource.Success(laravelApiService.getSpecialties().await()))
@@ -80,7 +80,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun getDoctors(specialtyId: Int): Flow<Resource<ArrayList<Doctor>>> =
+    fun getDoctors(specialtyId: Int) =
         callbackFlow<Resource<ArrayList<Doctor>>> {
             try {
                 offer(Resource.Success(laravelApiService.getDoctors(specialtyId).await()))
@@ -90,7 +90,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose{ close() }
         }
 
-    fun getHours(doctorId: Int, date:String) : Flow<Resource<Schedule>> =
+    fun getHours(doctorId: Int, date:String) =
         callbackFlow<Resource<Schedule>>{
             try{
                 offer(Resource.Success(laravelApiService.getHours(doctorId, date).await()))
@@ -100,7 +100,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun storeAppointment(authHeader:String, storeAppointment: StoreAppointment): Flow<Resource<SimpleResponse>> =
+    fun storeAppointment(authHeader:String, storeAppointment: StoreAppointment) =
         callbackFlow<Resource<SimpleResponse>>{
             try{
                 offer(Resource.Success(laravelApiService.storeAppointment(authHeader, storeAppointment).await()))
@@ -110,7 +110,7 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun register(email:String,name:String,password:String,passwordConfirmation: String): Flow<Resource<LoginResponse>> =
+    fun register(email:String,name:String,password:String,passwordConfirmation: String) =
         callbackFlow<Resource<LoginResponse>>{
             try{
                 offer(Resource.Success(laravelApiService.register(email, name, password, passwordConfirmation).await()))

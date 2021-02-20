@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val repository: LaravelRepository): ViewModel() {
 
-    fun register(email:String,name:String,password:String,passwordConfirmation: String): LiveData<Resource<LoginResponse>> =
+    fun register(email:String,name:String,password:String,passwordConfirmation: String) =
         liveData<Resource<LoginResponse>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try{

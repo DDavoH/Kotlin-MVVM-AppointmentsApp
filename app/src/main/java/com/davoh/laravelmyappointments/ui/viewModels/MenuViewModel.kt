@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuViewModel @Inject constructor(private val repository: LaravelRepository) : ViewModel(){
 
-    fun postToken(authHeader:String, deviceToken: String?): LiveData<Resource<SimpleResponse>> =
+    fun postToken(authHeader:String, deviceToken: String?) =
         liveData<Resource<SimpleResponse>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
@@ -22,7 +22,7 @@ class MenuViewModel @Inject constructor(private val repository: LaravelRepositor
             }
         }
 
-    fun postLogout(authHeader: String): LiveData<Resource<SimpleResponse>> =
+    fun postLogout(authHeader: String) =
         liveData<Resource<SimpleResponse>>(viewModelScope.coroutineContext + Dispatchers.IO){
             emit(Resource.Loading())
             try {
