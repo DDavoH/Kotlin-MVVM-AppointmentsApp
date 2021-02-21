@@ -155,6 +155,10 @@ class MenuActivity : AppCompatActivity() {
                  navController.navigateUp()
                  return false
              }
+             R.id.appointmentDetailsFragment->{
+                 navController.navigateUp()
+                 return false
+             }
             else -> {
                return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
             }

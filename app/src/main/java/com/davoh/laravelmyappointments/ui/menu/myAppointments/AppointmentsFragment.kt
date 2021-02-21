@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.davoh.laravelmyappointments.R
 import com.davoh.laravelmyappointments.adapters.AppointmentAdapter
 import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.core.Resource
@@ -66,7 +68,7 @@ class AppointmentsFragment : Fragment() {
 
         adapter.setOnItemClickListener(object: AppointmentAdapter.OnItemClickListener{
             override fun onIntemClick(appointment: Appointment) {
-                requireContext().toast("Item ${appointment.id}git was clicked")
+                findNavController().navigate(R.id.action_appointmentsFragment_to_appointmentDetailsFragment)
             }
 
         })
