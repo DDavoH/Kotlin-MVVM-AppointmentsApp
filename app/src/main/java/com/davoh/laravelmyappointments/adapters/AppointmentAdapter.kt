@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-
+    private var listener: OnItemClickListener? = null
 
     inner class ViewHolder(private val binding: AppointmentRowBinding): RecyclerView.ViewHolder(binding.root){
 
@@ -69,6 +69,10 @@ class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : Rec
             calendar.timeInMillis = appointment.createdAt
 
             binding.tvCreatedAt.text = "Cita registrada el dia  ${formatter.format(calendar.time)} "
+
+            binding.cardViewRow.setOnClickListener {
+                listener?.onIntemClick(appointment)
+            }
         }
 
     }
@@ -85,5 +89,13 @@ class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : Rec
 
     override fun getItemCount(): Int {
         return appointments.size
+    }
+
+    interface OnItemClickListener {
+        fun onIntemClick(appointment: Appointment)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
     }
 }

@@ -61,7 +61,15 @@ class AppointmentsFragment : Fragment() {
 
     private fun recyclerViewAppointments(appointments: ArrayList<Appointment>){
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
-        binding.rv.adapter = AppointmentAdapter(appointments)
+        val adapter = AppointmentAdapter(appointments)
+        binding.rv.adapter = adapter
+
+        adapter.setOnItemClickListener(object: AppointmentAdapter.OnItemClickListener{
+            override fun onIntemClick(appointment: Appointment) {
+                requireContext().toast("Item ${appointment.id}git was clicked")
+            }
+
+        })
     }
 
     override fun onDestroyView() {
