@@ -1,6 +1,8 @@
 package com.davoh.laravelmyappointments.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /*
 "id": 301,
@@ -19,15 +21,15 @@ import com.google.gson.annotations.SerializedName
             "name": "Dr David Cruz Ramirez"
         }
  */
+@Parcelize
 data class Appointment (
-        val id: Int,
-        val description: String,
-        val type:String,
-        val status: String,
-
+        @SerializedName("id") val id: Int =0,
+        @SerializedName("description") val description: String,
+        @SerializedName("type") val type:String,
+        @SerializedName("status") val status: String,
         @SerializedName("scheduled_date") val scheduledDate: String,
         @SerializedName("scheduled_time_12") val scheduledTime: String,
         @SerializedName("created_at_in_millis") val createdAt: Long,
-        val specialty:Specialty,
-        val doctor:Doctor
-)
+        @SerializedName("specialty") val specialty:Specialty,
+        @SerializedName("doctor") val doctor:Doctor
+): Parcelable

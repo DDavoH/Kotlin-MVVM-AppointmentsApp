@@ -68,9 +68,9 @@ class AppointmentsFragment : Fragment() {
 
         adapter.setOnItemClickListener(object: AppointmentAdapter.OnItemClickListener{
             override fun onIntemClick(appointment: Appointment) {
-                findNavController().navigate(R.id.action_appointmentsFragment_to_appointmentDetailsFragment)
+                findNavController().navigate(AppointmentsFragmentDirections.actionAppointmentsFragmentToAppointmentDetailsFragment(appointment))
+                //findNavController().navigate(R.id.action_appointmentsFragment_to_appointmentDetailsFragment)
             }
-
         })
     }
 

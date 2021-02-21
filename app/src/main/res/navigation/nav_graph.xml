@@ -43,13 +43,23 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            />
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="appointment"
+                app:argType="com.davoh.laravelmyappointments.data.model.Appointment"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/appointmentDetailsFragment"
         android:name="com.davoh.laravelmyappointments.ui.menu.myAppointments.AppointmentDetailsFragment"
         android:label="Detalles"
         tools:layout="@layout/fragment_appointment_details"
-        />
+        >
+
+        <argument
+            android:name="appointment"
+            app:argType="com.davoh.laravelmyappointments.data.model.Appointment"
+            app:nullable="false" />
+    </fragment>
 </navigation>
