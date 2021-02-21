@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_medical" />
-                            <entry key="sourceFile" value="C:\Users\david\AndroidStudioProjects\KotlinProjects\LaravelMyAppointments" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic__26_file" />
+                            <entry key="sourceFile" value="C:\Users\david\Pictures\Iconos from web\3209067-nursing\svg\026-file.svg" />
                           </map>
                         </option>
                       </PersistentState>
