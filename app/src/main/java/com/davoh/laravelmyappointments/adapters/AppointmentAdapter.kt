@@ -14,11 +14,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : RecyclerView.Adapter<AppointmentAdapter.ViewHolder>(){
+class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
 
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
 
         fun bind(appointment: Appointment) = with(itemView){
@@ -77,8 +77,8 @@ class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : Rec
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.appointment_row, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(appointments[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ViewHolder).bind(appointments[position])
     }
 
     override fun getItemCount(): Int {
