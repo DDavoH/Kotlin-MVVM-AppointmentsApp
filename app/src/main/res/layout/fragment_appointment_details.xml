@@ -125,39 +125,42 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic__06_medical_record"
+                    app:tint="@color/blue_700"
+                    tools:layout_editor_absoluteX="45dp"
+                    tools:layout_editor_absoluteY="283dp" />
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic__06_medical_record"
-                        app:tint="@color/blue_700"
-                        tools:layout_editor_absoluteX="45dp"
-                        tools:layout_editor_absoluteY="283dp" />
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Descripción:"
                         android:textSize="18sp"
-                        android:layout_marginStart="5dp"/>
+                        />
+
+                    <TextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Me duele mucho la cabeza desde anoche"
+                        android:textSize="14sp"
+                         />
 
                 </LinearLayout>
 
-
-                <TextView
-                    android:id="@+id/tvDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Me duele mucho la cabeza desde anoche"
-                    android:textSize="14sp"
-                    tools:layout_editor_absoluteX="45dp"
-                    tools:layout_editor_absoluteY="346dp" />
 
             </LinearLayout>
 
