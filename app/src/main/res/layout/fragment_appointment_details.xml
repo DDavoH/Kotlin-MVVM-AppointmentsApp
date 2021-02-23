@@ -23,8 +23,6 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,45 +80,44 @@
 
                 </LinearLayout>
 
-
-
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic__13_medicine"
+                    app:tint="@color/blue_700"
+                    />
 
                 <LinearLayout
+                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic__13_medicine"
-                        app:tint="@color/blue_700"
-                        />
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    >
 
                     <TextView
-                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Atención el dia:"
                         android:textSize="18sp"
-                        android:layout_gravity="center"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvScheduledDateAndHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2020-12-08 A las: 6:36 PM"
+                        android:textSize="14sp"
                         />
 
                 </LinearLayout>
 
-
-                <TextView
-                    android:id="@+id/tvScheduledDateAndHour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2020-12-08 A las: 6:36 PM"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"/>
 
             </LinearLayout>
 
