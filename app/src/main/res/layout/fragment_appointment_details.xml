@@ -23,53 +23,69 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic__39_male"
-                    app:tint="@color/blue_700"
-                    tools:layout_editor_absoluteX="45dp"
-                    tools:layout_editor_absoluteY="29dp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="David Cruz Ramírez"
-                    android:textSize="18sp"
-                    tools:layout_editor_absoluteX="116dp"
-                    tools:layout_editor_absoluteY="57dp" />
+                    android:orientation="vertical"
+                    >
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic__39_male"
+                            app:tint="@color/blue_700"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvDoctorName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="David Cruz Ramírez"
+                            android:textSize="18sp"
+                            android:layout_gravity="center"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginStart="15dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic__22_caduceus_symbol"
+                            app:tint="@color/blue_700"
+                            android:layout_marginTop="5dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvSpecialty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Neurologia"
+                            android:textSize="14sp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic__22_caduceus_symbol"
-                    app:tint="@color/blue_700"
-                    tools:layout_editor_absoluteX="63dp"
-                    tools:layout_editor_absoluteY="96dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Neurologia"
-                    android:textSize="14sp"
-                    tools:layout_editor_absoluteX="116dp"
-                    tools:layout_editor_absoluteY="96dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -84,31 +100,32 @@
                         android:layout_height="50dp"
                         android:src="@drawable/ic__13_medicine"
                         app:tint="@color/blue_700"
-                        tools:layout_editor_absoluteX="43dp"
-                        tools:layout_editor_absoluteY="157dp" />
+                        />
 
                     <TextView
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Atención el dia:"
                         android:textSize="18sp"
-                        tools:layout_editor_absoluteX="105dp"
-                        tools:layout_editor_absoluteY="175dp" />
+                        android:layout_gravity="center"
+                        />
 
                 </LinearLayout>
 
 
                 <TextView
+                    android:id="@+id/tvScheduledDateAndHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2020-12-08 A las: 6:36 PM"
                     android:textSize="14sp"
-                    tools:layout_editor_absoluteX="45dp"
-                    tools:layout_editor_absoluteY="221dp" />
+                    android:layout_gravity="center"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -131,13 +148,13 @@
                         android:layout_height="wrap_content"
                         android:text="Descripción:"
                         android:textSize="18sp"
-                        tools:layout_editor_absoluteX="105dp"
-                        tools:layout_editor_absoluteY="301dp" />
+                        android:layout_marginStart="5dp"/>
 
                 </LinearLayout>
 
 
                 <TextView
+                    android:id="@+id/tvDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Me duele mucho la cabeza desde anoche"
@@ -148,6 +165,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -157,20 +175,22 @@
                     android:layout_height="50dp"
                     android:src="@drawable/ic__47_x_ray"
                     app:tint="@color/blue_700"
-                    tools:layout_editor_absoluteX="43dp"
-                    tools:layout_editor_absoluteY="419dp" />
+                    />
 
                 <TextView
+                    android:id="@+id/tvType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Examen"
                     android:textSize="18sp"
-                    tools:layout_editor_absoluteX="105dp"
-                    tools:layout_editor_absoluteY="437dp" />
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    />
 
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -180,15 +200,16 @@
                     android:layout_height="50dp"
                     android:src="@drawable/ic__26_file"
                     app:tint="@color/blue_700"
-                    tools:layout_editor_absoluteX="41dp"
-                    tools:layout_editor_absoluteY="483dp" />
+                    />
 
                 <LinearLayout
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvAppointmentId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cita médica #301"
@@ -198,6 +219,7 @@
 
 
                     <TextView
+                        android:id="@+id/tvCreatedAt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cita registrada el dia 28/enero/2021"
@@ -222,7 +244,7 @@
                     android:id="@+id/statusMiniCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/orange_200">
+                    android:background="@color/green_200">
 
                     <TextView
                         android:id="@+id/tvStatus"
