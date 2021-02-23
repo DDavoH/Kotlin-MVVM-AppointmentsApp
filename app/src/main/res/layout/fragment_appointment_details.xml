@@ -132,8 +132,7 @@
                     android:layout_height="50dp"
                     android:src="@drawable/ic__06_medical_record"
                     app:tint="@color/blue_700"
-                    tools:layout_editor_absoluteX="45dp"
-                    tools:layout_editor_absoluteY="283dp" />
+                   />
 
 
                 <LinearLayout
@@ -216,8 +215,7 @@
                         android:layout_height="wrap_content"
                         android:text="Cita médica #301"
                         android:textSize="14sp"
-                        tools:layout_editor_absoluteX="105dp"
-                        tools:layout_editor_absoluteY="483dp" />
+                        />
 
 
                     <TextView
@@ -226,8 +224,7 @@
                         android:layout_height="wrap_content"
                         android:text="Cita registrada el dia 28/enero/2021"
                         android:textSize="14sp"
-                        tools:layout_editor_absoluteX="105dp"
-                        tools:layout_editor_absoluteY="514dp" />
+                        />
 
 
                 </LinearLayout>
