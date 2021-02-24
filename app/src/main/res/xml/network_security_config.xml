@@ -10,7 +10,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">example.com</domain>
         <domain includeSubdomains="true">alexadavoh.servehttp.com</domain>
-        <domain includeSubdomains="true">187.135.40.156</domain>
+        <domain includeSubdomains="true">192.168.1.70</domain>
     </domain-config>
 
 </network-security-config>
