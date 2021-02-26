@@ -1,21 +1,21 @@
 package com.davoh.laravelmyappointments.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import com.davoh.laravelmyappointments.api.LaravelApiService
 import com.davoh.laravelmyappointments.api.NetworkDataSource
 import com.davoh.laravelmyappointments.core.Resource
+import com.davoh.laravelmyappointments.data.local.LocalDatasource
+import com.davoh.laravelmyappointments.data.model.*
 import com.davoh.laravelmyappointments.io.body.StoreAppointment
-import com.davoh.laravelmyappointments.io.response.LoginResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 
-class LaravelRepository @Inject constructor(private val networkDataSource: NetworkDataSource)  {
+
+class LaravelRepository @Inject constructor(private val networkDataSource: NetworkDataSource,
+                                            private val localDatasource: LocalDatasource
+)  {
 
       fun postLogin(email: String, password: String) = networkDataSource.postLogin(email, password)
 
@@ -23,7 +23,26 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
 
       fun postLogout(authHeader: String) = networkDataSource.postLogout(authHeader)
 
-      fun getAppointments(authHeader:String) = networkDataSource.getAppointments(authHeader)
+      suspend fun getAppointments(authHeader:String) =
+            callbackFlow<Resource<List<Appointment>>>{
+                  offer(getCachedAppointments())
+                  networkDataSource.getAppointments(authHeader).collect{
+                        when (it) {
+                              is Resource.Success -> {
+                                    for (appointment in it.data) {
+                                          saveAppointment(appointment.asAppointmentEntity())
+                                    }
+                                    offer(getCachedAppointments())
+                              }
+                              is Resource.Failure -> {
+                                    offer(getCachedAppointments())
+                              }
+                              else ->  offer(getCachedAppointments())
+                        }
+                  }
+                  awaitClose { cancel() }
+            }
+
 
       fun getSpecialties() = networkDataSource.getSpecialties()
 
@@ -37,5 +56,11 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
      fun register(email:String,name:String,password:String,passwordConfirmation: String) =
          networkDataSource.register(email, name, password, passwordConfirmation)
 
+      private suspend fun getCachedAppointments(): Resource<List<Appointment>> {
+            return localDatasource.getCachedAppointments()
+      }
 
+      private suspend fun saveAppointment(appointment: AppointmentEntity) {
+           return localDatasource.saveAppointment(appointment)
+      }
 }

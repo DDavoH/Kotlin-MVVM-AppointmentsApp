@@ -10,18 +10,11 @@ import com.davoh.laravelmyappointments.io.body.StoreAppointment
 import com.davoh.laravelmyappointments.io.response.LoginResponse
 import com.davoh.laravelmyappointments.io.response.SimpleResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.launch
 import retrofit2.*
-import retrofit2.http.Header
-import retrofit2.http.Query
+
 
 @ExperimentalCoroutinesApi
 class NetworkDataSource @Inject constructor(
@@ -60,8 +53,8 @@ class NetworkDataSource @Inject constructor(
             awaitClose { close() }
         }
 
-    fun getAppointments(authHeader:String) =
-        callbackFlow<Resource<ArrayList<Appointment>>>{
+   fun getAppointments(authHeader:String) =
+        callbackFlow<Resource<List<Appointment>>>{
             try{
                 offer(Resource.Success(laravelApiService.getAppointments(authHeader).await()))
             }catch (e:Exception){

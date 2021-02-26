@@ -2,6 +2,7 @@ package com.davoh.laravelmyappointments.data.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -40,7 +41,7 @@ data class Appointment (
 @Entity(tableName = "appointmentTable")
 data class AppointmentEntity(
         @PrimaryKey
-        val id: String,
+        val id: Int,
         @ColumnInfo(name = "appointment_description")
         val description: String,
         @ColumnInfo(name = "appointment_type")
@@ -53,8 +54,27 @@ data class AppointmentEntity(
         val scheduledTime:  String,
         @ColumnInfo(name = "appointment_created_at_in_millis")
         val createdAt:  Long,
-        @ColumnInfo(name = "appointment_specialty")
+        @Embedded
         val specialty: Specialty,
-        @ColumnInfo(name = "appointment_doctor")
+        @Embedded
         val doctor: Doctor,
 )
+
+
+fun List<AppointmentEntity>.asAppointmentList(): List<Appointment> = this.map {
+        Appointment(
+                it.id,
+                it.description,
+                it.type,
+                it.status,
+                it.scheduledDate,
+                it.scheduledTime,
+                it.createdAt,
+                it.specialty,
+                it.doctor
+        )
+}
+
+fun Appointment.asAppointmentEntity(): AppointmentEntity =
+        AppointmentEntity(this.id, this.description, this.type, this.status, this.scheduledDate, this.scheduledTime,
+                this.createdAt,this.specialty,this.doctor)

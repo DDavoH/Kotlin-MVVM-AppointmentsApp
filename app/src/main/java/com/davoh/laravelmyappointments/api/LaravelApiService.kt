@@ -35,7 +35,7 @@ interface LaravelApiService {
     fun postLogout(@Header("Authorization") authHeader:String) : Call<SimpleResponse>
 
     @GET("appointments")
-    fun getAppointments(@Header("Authorization") authHeader:String) : Call<ArrayList<Appointment>>
+    fun getAppointments(@Header("Authorization") authHeader:String) : Call<List<Appointment>>
 
     @POST("appointments")
     @Headers("Accept: application/json")

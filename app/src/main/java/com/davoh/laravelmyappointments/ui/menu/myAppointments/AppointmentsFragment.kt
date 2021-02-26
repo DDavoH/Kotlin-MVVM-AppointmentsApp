@@ -61,7 +61,7 @@ class AppointmentsFragment : Fragment() {
         }
     }
 
-    private fun recyclerViewAppointments(appointments: ArrayList<Appointment>){
+    private fun recyclerViewAppointments(appointments: List<Appointment>){
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter = AppointmentAdapter(appointments)
         binding.rv.adapter = adapter

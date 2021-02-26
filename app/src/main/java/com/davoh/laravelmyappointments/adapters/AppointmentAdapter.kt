@@ -15,7 +15,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class AppointmentAdapter(private val appointments: ArrayList<Appointment>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class AppointmentAdapter(private val appointments: List<Appointment>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private var listener: OnItemClickListener? = null
 
