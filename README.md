@@ -4,6 +4,8 @@
 * Hilt
 * Retrofit2
 * Kotlin Courutines
+* Room
+* Firebase Cloud Messaging
 * MVVM Architecture
 
 ![Alt Text](https://media.giphy.com/media/9Ef1LzapK3vT0cnEMK/giphy.gif)
