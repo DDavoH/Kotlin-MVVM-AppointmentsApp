@@ -17,4 +17,8 @@ class LocalDatasource @Inject constructor(private val appointmentDao: Appointmen
         return Resource.Success(appointmentDao.getAppointments().asAppointmentList())
     }
 
+    suspend fun deleteCachedAppointments(){
+        appointmentDao.deleteAppointments()
+    }
+
 }

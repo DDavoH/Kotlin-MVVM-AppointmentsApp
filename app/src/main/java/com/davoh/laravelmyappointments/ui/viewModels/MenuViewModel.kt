@@ -27,6 +27,7 @@ class MenuViewModel @Inject constructor(private val repository: LaravelRepositor
             emit(Resource.Loading())
             try {
                 val response = repository.postLogout(authHeader).asLiveData()
+                repository.deleteCachedAppointments()
                 emitSource(response)
             } catch (e: Exception) {
                 emit(Resource.Failure(e))

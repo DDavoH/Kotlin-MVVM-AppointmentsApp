@@ -63,4 +63,8 @@ class LaravelRepository @Inject constructor(private val networkDataSource: Netwo
       private suspend fun saveAppointment(appointment: AppointmentEntity) {
            return localDatasource.saveAppointment(appointment)
       }
+
+     suspend fun deleteCachedAppointments(){
+        return localDatasource.deleteCachedAppointments()
+     }
 }
