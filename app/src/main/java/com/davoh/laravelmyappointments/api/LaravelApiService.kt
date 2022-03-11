@@ -61,10 +61,10 @@ interface LaravelApiService {
     ): Call<SimpleResponse>
 
     companion object {
-        private const val BASE_URL = "http://192.168.1.70/api/"
+        private const val BASE_URL = "http://localhost/api/"
 
         fun create(): LaravelApiService {
-            val logger = HttpLoggingInterceptor().apply { level = Level.BASIC }
+            val logger = HttpLoggingInterceptor().apply { level = Level.BODY }
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
